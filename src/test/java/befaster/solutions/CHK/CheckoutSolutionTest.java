@@ -31,6 +31,3 @@ public class CheckoutSolutionTest {
         assertThat(checkoutSolution.checkout("AADD"), equalTo(100+30));
     }
 }
-
-
-

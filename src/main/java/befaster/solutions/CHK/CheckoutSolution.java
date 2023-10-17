@@ -23,16 +23,18 @@ public class CheckoutSolution {
             return -1;
         }
 
-        final var countBySku = countBy(skus.trim());
-        if(countBySku.isEmpty()){
+        try {
+            final var countBySku = countBy(skus.trim());
+            return items
+                    .entrySet()
+                    .stream()
+                    .mapToInt(e -> calculatePriceBasedOn(e.getValue(),
+                            countBySku.getOrDefault(e.getKey(), 0L).intValue()))
+                    .sum();
+        } catch (Exception e){
+            System.out.println("Invalid Sku list");
             return -1;
         }
-        return items
-                .entrySet()
-                .stream()
-                .mapToInt(e -> calculatePriceBasedOn(e.getValue(),
-                        countBySku.getOrDefault(e.getKey(), 0L).intValue()))
-                .sum();
     }
 
     private static Integer calculatePriceBasedOn(final Item item, final Integer quantity){
@@ -49,13 +51,7 @@ public class CheckoutSolution {
     private Map<String, Long> countBy(final String skus){
         return Stream.of(skus.split(""))
                 .map(items::get)
-                .filter(Objects::nonNull)
+                .map(item -> Optional.ofNullable(item).orElseThrow())
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
-
-
-
-
-
-
