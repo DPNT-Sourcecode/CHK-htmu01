@@ -19,8 +19,11 @@ public class CheckoutSolution {
     );
     public Integer checkout(String skus) {
 
-        if(skus == null || skus.isEmpty()){
+        if(skus == null){
             return -1;
+        }
+        if(skus.isBlank()){
+            return 0;
         }
 
         try {
@@ -55,3 +58,4 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
