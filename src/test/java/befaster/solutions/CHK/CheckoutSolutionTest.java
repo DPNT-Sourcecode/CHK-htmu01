@@ -1,40 +1,27 @@
 package befaster.solutions.CHK;
 
-import befaster.runner.SolutionNotImplementedException;
+import befaster.solutions.SUM.SumSolution;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class CheckoutSolution {
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
-    record Offer(Integer quantity, Integer price){}
-    record Item(String sku, Integer price, Optional<Offer> offer){}
+public class CheckoutSolutionTest {
 
-    private final List<Item> items = List.of(
-            new Item("A", 50, Optional.of(new Offer(3, 130))),
-            new Item("B", 30, Optional.of(new Offer(2, 45))),
-            new Item("C", 20, Optional.empty()),
-            new Item("D", 15, Optional.empty())
-    );
-    public Integer checkout(String skus) {
+    private CheckoutSolution checkoutSolution;
 
-        System.out.println(skus.toCharArray());
-       // var x = List.of(skus.toCharArray()).stream()
-         //       .collect(Collectors.groupingBy(Item::sku))
-
-                return 0;
+    @BeforeEach
+    public void setUp() {
+        checkoutSolution = new CheckoutSolution();
     }
 
-    public static void main(String[] args) {
-        var x = new CheckoutSolution();
-
-        var y = x.checkout("AB");
-
-        System.out.println(y);
-
-
+    @Test
+    public void compute_sum() {
+        assertThat(checkoutSolution.checkout("ABC"), equalTo(0));
     }
 }
+

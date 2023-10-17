@@ -21,21 +21,12 @@ public class CheckoutSolution {
     );
     public Integer checkout(String skus) {
 
-        System.out.println(skus.toCharArray());
+        System.out.println(skus.split(""));
        // var x = List.of(skus.toCharArray()).stream()
          //       .collect(Collectors.groupingBy(Item::sku))
 
                 return 0;
     }
-
-    public static void main(String[] args) {
-        var x = new CheckoutSolution();
-
-        var y = x.checkout("AB");
-
-        System.out.println(y);
-
-
-    }
 }
+
 
