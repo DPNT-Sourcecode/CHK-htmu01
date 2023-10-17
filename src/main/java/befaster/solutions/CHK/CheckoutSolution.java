@@ -22,7 +22,7 @@ public class CheckoutSolution {
     );
     public Integer checkout(String skus) {
 
-        if("".equals(skus)){
+        if(skus == null || skus.isEmpty()){
             return 0;
         }
 
@@ -52,5 +52,6 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
