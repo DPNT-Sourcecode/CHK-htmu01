@@ -15,7 +15,8 @@ public class CheckoutSolution {
             "A",new Item("A", 50, Optional.of(new Offer(3, 130))),
             "B",new Item("B", 30, Optional.of(new Offer(2, 45))),
             "C",new Item("C", 20, Optional.empty()),
-            "D",new Item("D", 15, Optional.empty())
+            "D",new Item("D", 15, Optional.empty()),
+            "E",new Item("E", 40, Optional.of(new Offer(2, 20)))
     );
     public Integer checkout(String skus) {
 
@@ -58,4 +59,5 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
