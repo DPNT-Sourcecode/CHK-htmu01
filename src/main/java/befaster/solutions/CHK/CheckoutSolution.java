@@ -22,17 +22,30 @@ public class CheckoutSolution {
     );
     public Integer checkout(String skus) {
 
-        Stream.of(skus.split(""))
-                .map(this::findItem)
-                .collect(Collectors.groupingBy(Item::sku))
+        final var countBySku = countBy(skus);
+        return items
                 .entrySet()
-                .stream();
-               // .reduce();
-
-                return 0;
+                .stream()
+                .mapToInt(e -> calculatePriceBasedOn(e.getValue(),
+                        countBySku.getOrDefault(e.getKey(), 0L).intValue()))
+                .sum();
     }
 
-    private Item findItem(final String sku){
-        return items.get(sku);
+    private static Integer calculatePriceBasedOn(final Item item, final Integer quantity){
+        return item
+                .offer()
+                .map(offer -> {
+                    final var priceWithDiscount = (quantity / offer.quantity()) * offer.price();
+                    final var priceWithoutDiscount = (quantity % offer.quantity()) * item.price();
+                    return priceWithDiscount + priceWithoutDiscount;
+                })
+                .orElseGet(() -> quantity * item.price());
+    }
+
+    private Map<String, Long> countBy(final String skus){
+        return Stream.of(skus.split(""))
+                .map(items::get)
+                .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+

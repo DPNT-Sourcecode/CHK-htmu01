@@ -21,6 +21,8 @@ public class CheckoutSolutionTest {
 
     @Test
     public void compute_sum() {
-        assertThat(checkoutSolution.checkout("ABC"), equalTo(0));
+        assertThat(checkoutSolution.checkout("AAABBBBC"), equalTo(240));
+        assertThat(checkoutSolution.checkout("AADD"), equalTo(100+30));
     }
 }
+
