@@ -9,14 +9,14 @@ import java.util.stream.Stream;
 public class CheckoutSolution {
 
     record Offer(Integer quantity, Integer price){}
-    record Item(String sku, Integer price, Optional<Offer> offer){}
+    record Item(String sku, Integer price, List<Offer> offers){}
 
     private final Map<String, Item> items = Map.of(
-            "A",new Item("A", 50, Optional.of(new Offer(3, 130))),
-            "B",new Item("B", 30, Optional.of(new Offer(2, 45))),
-            "C",new Item("C", 20, Optional.empty()),
-            "D",new Item("D", 15, Optional.empty()),
-            "E",new Item("E", 40, Optional.of(new Offer(2, 20)))
+            "A",new Item("A", 50, List.of(new Offer(3, 130))),
+            "B",new Item("B", 30, List.of(new Offer(2, 45))),
+            "C",new Item("C", 20, List.of()),
+            "D",new Item("D", 15, List.of()),
+            "E",new Item("E", 40, List.of(new Offer(2, 20)))
     );
     public Integer checkout(String skus) {
 
@@ -59,5 +59,6 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
