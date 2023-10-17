@@ -20,7 +20,7 @@ public class CheckoutSolution {
     public Integer checkout(String skus) {
 
         if(skus == null || skus.isEmpty()){
-            return 0;
+            return -1;
         }
 
         final var countBySku = countBy(skus.trim());
@@ -50,6 +50,7 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
 
