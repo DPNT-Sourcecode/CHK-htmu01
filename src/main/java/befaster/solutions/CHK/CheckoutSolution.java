@@ -8,15 +8,15 @@ import java.util.stream.Stream;
 
 public class CheckoutSolution {
 
-    record Offer(Integer quantity, Integer price){}
+    record Offer(Integer quantity, Integer price, Integer free){}
     record Item(String sku, Integer price, List<Offer> offers){}
 
     private final Map<String, Item> items = Map.of(
-            "A",new Item("A", 50, List.of(new Offer(3, 130))),
-            "B",new Item("B", 30, List.of(new Offer(2, 45))),
+            "A",new Item("A", 50, List.of(new Offer(3, 130, 0))),
+            "B",new Item("B", 30, List.of(new Offer(2, 45, 0))),
             "C",new Item("C", 20, List.of()),
             "D",new Item("D", 15, List.of()),
-            "E",new Item("E", 40, List.of(new Offer(2, 20)))
+            "E",new Item("E", 40, List.of(new Offer(2, 40, 1)))
     );
     public Integer checkout(String skus) {
 
@@ -42,14 +42,17 @@ public class CheckoutSolution {
     }
 
     private static Integer calculatePriceBasedOn(final Item item, final Integer quantity){
+        if(item.offers.isEmpty()){
+            return quantity * item.price();
+        }
         return item
-                .offer()
-                .map(offer -> {
+                .offers()
+                .stream()
+                .mapToInt(offer -> {
                     final var priceWithDiscount = (quantity / offer.quantity()) * offer.price();
                     final var priceWithoutDiscount = (quantity % offer.quantity()) * item.price();
                     return priceWithDiscount + priceWithoutDiscount;
-                })
-                .orElseGet(() -> quantity * item.price());
+                }).sum();
     }
 
     private Map<String, Long> countBy(final String skus){
@@ -59,6 +62,7 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
 
