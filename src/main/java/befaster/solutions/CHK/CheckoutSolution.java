@@ -24,6 +24,9 @@ public class CheckoutSolution {
         }
 
         final var countBySku = countBy(skus.trim());
+        if(countBySku.isEmpty()){
+            return -1;
+        }
         return items
                 .entrySet()
                 .stream()
@@ -50,6 +53,7 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
 
