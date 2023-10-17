@@ -22,7 +22,11 @@ public class CheckoutSolution {
     );
     public Integer checkout(String skus) {
 
-        final var countBySku = countBy(skus);
+        if("".equals(skus)){
+            return 0;
+        }
+
+        final var countBySku = countBy(skus.trim());
         return items
                 .entrySet()
                 .stream()
@@ -48,4 +52,5 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
