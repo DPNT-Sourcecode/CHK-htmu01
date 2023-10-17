@@ -36,4 +36,3 @@ public class CheckoutSolution {
         return items.get(sku);
     }
 }
-
