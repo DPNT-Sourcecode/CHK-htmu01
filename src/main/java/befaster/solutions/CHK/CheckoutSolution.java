@@ -2,10 +2,7 @@ package befaster.solutions.CHK;
 
 import befaster.runner.SolutionNotImplementedException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,9 +46,11 @@ public class CheckoutSolution {
     private Map<String, Long> countBy(final String skus){
         return Stream.of(skus.split(""))
                 .map(items::get)
+                .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
 
