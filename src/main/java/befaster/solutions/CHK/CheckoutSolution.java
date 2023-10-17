@@ -7,24 +7,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CheckoutSolution {
 
     record Offer(Integer quantity, Integer price){}
     record Item(String sku, Integer price, Optional<Offer> offer){}
 
-    private final List<Item> items = List.of(
-            new Item("A", 50, Optional.of(new Offer(3, 130))),
-            new Item("B", 30, Optional.of(new Offer(2, 45))),
-            new Item("C", 20, Optional.empty()),
-            new Item("D", 15, Optional.empty())
+    private final Map<String, Item> items = Map.of(
+            "A",new Item("A", 50, Optional.of(new Offer(3, 130))),
+            "B",new Item("B", 30, Optional.of(new Offer(2, 45))),
+            "C",new Item("C", 20, Optional.empty()),
+            "D",new Item("D", 15, Optional.empty())
     );
     public Integer checkout(String skus) {
 
-        System.out.println(skus.split(""));
-       // var x = List.of(skus.toCharArray()).stream()
-         //       .collect(Collectors.groupingBy(Item::sku))
+        Stream.of(skus.split(""))
+                .map(this::findItem)
+                .collect(Collectors.groupingBy(Item::sku))
+                .entrySet()
+                .stream();
+               // .reduce();
 
                 return 0;
     }
+
+    private Item findItem(final String sku){
+        return items.get(sku);
+    }
 }
+
