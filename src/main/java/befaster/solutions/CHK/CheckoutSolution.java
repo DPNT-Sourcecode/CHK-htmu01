@@ -32,7 +32,7 @@ public class CheckoutSolution {
                     new Offer(10, 80, "H", OfferType.PRICE_DISCOUNT)))),
             Map.entry("I",new Item("I", 35, List.of())),
             Map.entry("J",new Item("J", 60, List.of())),
-            Map.entry("K",new Item("K", 80, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT)))),
+            Map.entry("K",new Item("K", 70, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT)))),
             Map.entry("L",new Item("L", 90, List.of())),
             Map.entry("M",new Item("M", 15, List.of())),
             Map.entry("N",new Item("N", 40, List.of(new Offer(3, 1, "M", OfferType.FREE_ITEM)))),
@@ -168,5 +168,6 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
