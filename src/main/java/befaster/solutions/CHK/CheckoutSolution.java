@@ -63,23 +63,25 @@ public class CheckoutSolution {
         try {
             final var countBySku = countBy(skus.trim());
             final var countAfterFreeItems = applyFreeItemsQuantities(countBySku);
-            return calculateNonGroupPrice(countAfterFreeItems) + calculateGroupPrice(countAfterFreeItems);
+
+            final var groupDiscountsSkus = items.values()
+                    .stream()
+                    .filter(i->i.offers().stream().anyMatch(o->o.offerType() == OfferType.GROUP_DISCOUNT))
+                    .map(Item::sku)
+                    .toList();
+
+            return calculateNonGroupPrice(countAfterFreeItems, groupDiscountsSkus)
+                    + calculateGroupPrice(countAfterFreeItems, groupDiscountsSkus);
         } catch (Exception e){
             System.out.println("Invalid Sku list");
             return -1;
         }
     }
 
-    private Integer calculateGroupPrice(final Map<String, Long> countAfterFreeItems) {
+    private Integer calculateGroupPrice(final Map<String, Long> countAfterFreeItems, final List<String> groupDiscountsSkus ) {
         record GroupedAmount(Integer counter, Integer amountProcessed, Item item){
 
         }
-
-        final var groupDiscountsSkus = items.values()
-                .stream()
-                .filter(i->i.offers().stream().anyMatch(o->o.offerType() == OfferType.GROUP_DISCOUNT))
-                .map(Item::sku)
-                .toList();
 
         return countAfterFreeItems.entrySet()
                 .stream()
@@ -102,10 +104,11 @@ public class CheckoutSolution {
                 .orElse(0);
     }
 
-    private int calculateNonGroupPrice(Map<String, Long> countBySku) {
+    private int calculateNonGroupPrice(Map<String, Long> countBySku, final List<String> groupDiscountsSkus) {
         return items
                 .entrySet()
                 .stream()
+                .filter(item-> !groupDiscountsSkus.contains(item.getKey()))
                 .mapToInt(e -> calculatePriceBasedOn(e.getValue(),
                         countBySku.getOrDefault(e.getKey(), 0L).intValue()))
                 .sum();
@@ -165,4 +168,5 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 

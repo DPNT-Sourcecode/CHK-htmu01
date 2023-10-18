@@ -36,6 +36,9 @@ public class CheckoutSolutionTest {
         assertThat(checkoutSolution.checkout("FFFF"), equalTo(30));
         assertThat(checkoutSolution.checkout("FFFFFF"), equalTo(40));
         assertThat(checkoutSolution.checkout("ZZZZZZZYXXAA"), equalTo(152+100));
+        assertThat(checkoutSolution.checkout("ZZZ"), equalTo(45));
+        assertThat(checkoutSolution.checkout("XX"), equalTo(40));
     }
 }
+
 
