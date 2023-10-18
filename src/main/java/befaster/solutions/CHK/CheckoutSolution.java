@@ -22,7 +22,7 @@ public class CheckoutSolution {
             "C",new Item("C", 20, List.of()),
             "D",new Item("D", 15, List.of()),
             "E",new Item("E", 40, List.of(new Offer(2, 1, "B", OfferType.FREE_ITEM))),
-            "F",new Item("F", 10, List.of(new Offer(2, 1, "F", OfferType.FREE_ITEM)))
+            "F",new Item("F", 10, List.of(new Offer(3, 1, "F", OfferType.FREE_ITEM)))
     );
     public Integer checkout(String skus) {
 
@@ -106,4 +106,5 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
