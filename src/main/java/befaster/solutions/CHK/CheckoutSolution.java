@@ -14,28 +14,39 @@ public class CheckoutSolution {
     record Offer(Integer triggerQuantity, Integer unit, String sku, OfferType offerType){}
     record Item(String sku, Integer price, List<Offer> offers){}
 
-    private final Map<String, Item> items = Map.of(
-            "A",new Item("A", 50, List.of(
+    private final Map<String, Item> items = Map.ofEntries(
+            Map.entry("A",new Item("A", 50, List.of(
                     new Offer(3, 130, "A", OfferType.PRICE_DISCOUNT),
-                    new Offer(5, 200, "A", OfferType.PRICE_DISCOUNT))),
-            "B",new Item("B", 30, List.of(new Offer(2, 45, "B", OfferType.PRICE_DISCOUNT))),
-            "C",new Item("C", 20, List.of()),
-            "D",new Item("D", 15, List.of()),
-            "E",new Item("E", 40, List.of(new Offer(2, 1, "B", OfferType.FREE_ITEM))),
-            "F",new Item("F", 10, List.of(new Offer(3, 1, "F", OfferType.FREE_ITEM))),
-            "G",new Item("G", 20, List.of()),
-            "H",new Item("H", 10, List.of(
+                    new Offer(5, 200, "A", OfferType.PRICE_DISCOUNT)))),
+            Map.entry("B",new Item("B", 30, List.of(new Offer(2, 45, "B", OfferType.PRICE_DISCOUNT)))),
+            Map.entry( "C",new Item("C", 20, List.of())),
+            Map.entry("D",new Item("D", 15, List.of())),
+            Map.entry("E",new Item("E", 40, List.of(new Offer(2, 1, "B", OfferType.FREE_ITEM)))),
+            Map.entry( "F",new Item("F", 10, List.of(new Offer(3, 1, "F", OfferType.FREE_ITEM)))),
+            Map.entry( "G",new Item("G", 20, List.of())),
+            Map.entry("H",new Item("H", 10, List.of(
                     new Offer(5, 45, "H", OfferType.PRICE_DISCOUNT),
-                    new Offer(10, 80, "H", OfferType.PRICE_DISCOUNT))),
-            "I",new Item("I", 35, List.of()),
-            "J",new Item("J", 60, List.of()),
-            "K",new Item("K", 80, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT))),
-            "K",new Item("K", 80, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT))),
-            "L",new Item("L", 90, List.of()),
-            "M",new Item("M", 15, List.of()),
-            "N",new Item("N", 40, List.of(new Offer(3, 1, "M", OfferType.FREE_ITEM))),
-            "M",new Item("O", 10, List.of()),
-
+                    new Offer(10, 80, "H", OfferType.PRICE_DISCOUNT)))),
+            Map.entry("I",new Item("I", 35, List.of())),
+            Map.entry("J",new Item("J", 60, List.of())),
+            Map.entry("K",new Item("K", 80, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT)))),
+            Map.entry("L",new Item("L", 90, List.of())),
+            Map.entry("M",new Item("M", 15, List.of())),
+            Map.entry("N",new Item("N", 40, List.of(new Offer(3, 1, "M", OfferType.FREE_ITEM)))),
+            Map.entry("O",new Item("O", 10, List.of())),
+            Map.entry("P",new Item("P", 50, List.of(new Offer(5, 200, "P", OfferType.PRICE_DISCOUNT)))),
+            Map.entry("Q",new Item("Q", 30, List.of(new Offer(3, 80, "Q", OfferType.PRICE_DISCOUNT)))),
+            Map.entry("R",new Item("R", 50, List.of(new Offer(3, 1, "Q", OfferType.FREE_ITEM)))),
+            Map.entry("S",new Item("S", 30, List.of())),
+            Map.entry("T",new Item("T", 20, List.of())),
+            Map.entry("U",new Item("U", 40, List.of(new Offer(4, 1, "U", OfferType.FREE_ITEM)))),
+            Map.entry("V",new Item("V", 50, List.of(
+                    new Offer(2, 90, "V", OfferType.PRICE_DISCOUNT),
+                    new Offer(3, 130, "V", OfferType.PRICE_DISCOUNT)))),
+            Map.entry( "W",new Item("W", 20, List.of())),
+            Map.entry("X",new Item("X", 90, List.of())),
+            Map.entry("Y",new Item("Y", 10, List.of())),
+            Map.entry("Z",new Item("Z", 50, List.of()))
             );
     public Integer checkout(String skus) {
 
@@ -119,3 +130,4 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
