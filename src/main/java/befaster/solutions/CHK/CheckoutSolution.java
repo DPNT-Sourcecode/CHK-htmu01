@@ -22,8 +22,21 @@ public class CheckoutSolution {
             "C",new Item("C", 20, List.of()),
             "D",new Item("D", 15, List.of()),
             "E",new Item("E", 40, List.of(new Offer(2, 1, "B", OfferType.FREE_ITEM))),
-            "F",new Item("F", 10, List.of(new Offer(3, 1, "F", OfferType.FREE_ITEM)))
-    );
+            "F",new Item("F", 10, List.of(new Offer(3, 1, "F", OfferType.FREE_ITEM))),
+            "G",new Item("G", 20, List.of()),
+            "H",new Item("H", 10, List.of(
+                    new Offer(5, 45, "H", OfferType.PRICE_DISCOUNT),
+                    new Offer(10, 80, "H", OfferType.PRICE_DISCOUNT))),
+            "I",new Item("I", 35, List.of()),
+            "J",new Item("J", 60, List.of()),
+            "K",new Item("K", 80, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT))),
+            "K",new Item("K", 80, List.of(new Offer(2, 150, "K", OfferType.PRICE_DISCOUNT))),
+            "L",new Item("L", 90, List.of()),
+            "M",new Item("M", 15, List.of()),
+            "N",new Item("N", 40, List.of(new Offer(3, 1, "M", OfferType.FREE_ITEM))),
+            "M",new Item("O", 10, List.of()),
+
+            );
     public Integer checkout(String skus) {
 
         if(skus == null){
@@ -106,5 +119,6 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
