@@ -42,7 +42,3 @@ public class CheckoutSolutionTest {
         assertThat(checkoutSolution.checkout("ABCDEFGHIJKLMNOPQRSTUVW"), equalTo(795));
     }
 }
-
-
-
-
