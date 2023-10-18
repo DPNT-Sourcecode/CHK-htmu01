@@ -85,7 +85,7 @@ public class CheckoutSolution {
                 .offers()
                 .stream()
                 .filter(offer -> OfferType.PRICE_DISCOUNT == offer.offerType())
-                .sorted(Comparator.comparing(Offer::triggerQuantity))
+                .sorted(Comparator.comparing(Offer::triggerQuantity, Comparator.reverseOrder()))
                 .mapToInt(offer -> {
                     if(leftQuantity.get() / offer.triggerQuantity() >=1){
                         final var remainingQuantity = leftQuantity.get() % offer.triggerQuantity();
@@ -105,5 +105,6 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
