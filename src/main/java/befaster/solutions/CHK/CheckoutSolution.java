@@ -34,8 +34,8 @@ public class CheckoutSolution {
 
         try {
             final var countBySku = countBy(skus.trim());
-            //final var countAfterFreeItems = applyFreeItemsQuantities(countBySku);
-            return calculatePrice(countBySku);
+            final var countAfterFreeItems = applyFreeItemsQuantities(countBySku);
+            return calculatePrice(countAfterFreeItems);
         } catch (Exception e){
             System.out.println("Invalid Sku list");
             return -1;
@@ -70,7 +70,7 @@ public class CheckoutSolution {
                         .stream()
                         .filter(offer -> offer.offerType() == OfferType.FREE_ITEM)
                         .filter(offer -> offer.sku().equals(key))
-                        .mapToInt(offer-> (countBySku.get(m.getKey()).intValue() / offer.triggerQuantity()) * offer.unit())
+                        .mapToInt(offer-> (countBySku.getOrDefault(m.getKey(), 0L).intValue() / offer.triggerQuantity()) * offer.unit())
                         .sum())
                 .sum();
     }
@@ -105,6 +105,7 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
 
 
 
