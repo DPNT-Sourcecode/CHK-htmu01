@@ -22,6 +22,7 @@ public class CheckoutSolutionTest {
     @Test
     public void compute_sum() {
         assertThat(checkoutSolution.checkout("AAABBBBC"), equalTo(240));
+        assertThat(checkoutSolution.checkout("AAAAAAAAA"), equalTo(200+130+50));
         assertThat(checkoutSolution.checkout(null), equalTo(-1));
         assertThat(checkoutSolution.checkout(""), equalTo(0));
         assertThat(checkoutSolution.checkout("null"), equalTo(-1));
@@ -32,4 +33,5 @@ public class CheckoutSolutionTest {
         //assertThat(checkoutSolution.checkout("EEE"), equalTo(40));
     }
 }
+
 
