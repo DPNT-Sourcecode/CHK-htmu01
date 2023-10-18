@@ -3,16 +3,19 @@ package befaster.solutions.CHK;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class CheckoutSolution {
 
     enum OfferType{
-        PRICE_DISCOUNT, FREE_ITEM
+        PRICE_DISCOUNT, FREE_ITEM, GROUP_DISCOUNT
     }
 
     record Offer(Integer triggerQuantity, Integer unit, String sku, OfferType offerType){}
     record Item(String sku, Integer price, List<Offer> offers){}
+
+    private final Offer groupOfferOne = new Offer(3, 45, "GROUP_DISCOUNT_1", OfferType.GROUP_DISCOUNT);
 
     private final Map<String, Item> items = Map.ofEntries(
             Map.entry("A",new Item("A", 50, List.of(
@@ -37,16 +40,16 @@ public class CheckoutSolution {
             Map.entry("P",new Item("P", 50, List.of(new Offer(5, 200, "P", OfferType.PRICE_DISCOUNT)))),
             Map.entry("Q",new Item("Q", 30, List.of(new Offer(3, 80, "Q", OfferType.PRICE_DISCOUNT)))),
             Map.entry("R",new Item("R", 50, List.of(new Offer(3, 1, "Q", OfferType.FREE_ITEM)))),
-            Map.entry("S",new Item("S", 30, List.of())),
-            Map.entry("T",new Item("T", 20, List.of())),
+            Map.entry("S",new Item("S", 20, List.of(groupOfferOne))),
+            Map.entry("T",new Item("T", 20, List.of(groupOfferOne))),
             Map.entry("U",new Item("U", 40, List.of(new Offer(4, 1, "U", OfferType.FREE_ITEM)))),
             Map.entry("V",new Item("V", 50, List.of(
                     new Offer(2, 90, "V", OfferType.PRICE_DISCOUNT),
                     new Offer(3, 130, "V", OfferType.PRICE_DISCOUNT)))),
             Map.entry( "W",new Item("W", 20, List.of())),
-            Map.entry("X",new Item("X", 90, List.of())),
-            Map.entry("Y",new Item("Y", 10, List.of())),
-            Map.entry("Z",new Item("Z", 50, List.of()))
+            Map.entry("X",new Item("X", 17, List.of(groupOfferOne))),
+            Map.entry("Y",new Item("Y", 20, List.of(groupOfferOne))),
+            Map.entry("Z",new Item("Z", 21, List.of(groupOfferOne)))
             );
     public Integer checkout(String skus) {
 
@@ -60,14 +63,46 @@ public class CheckoutSolution {
         try {
             final var countBySku = countBy(skus.trim());
             final var countAfterFreeItems = applyFreeItemsQuantities(countBySku);
-            return calculatePrice(countAfterFreeItems);
+            return calculateNonGroupPrice(countAfterFreeItems) + calculateGroupPrice(countAfterFreeItems);
         } catch (Exception e){
             System.out.println("Invalid Sku list");
             return -1;
         }
     }
 
-    private int calculatePrice(Map<String, Long> countBySku) {
+    private Integer calculateGroupPrice(final Map<String, Long> countAfterFreeItems) {
+        record GroupedAmount(Integer counter, Integer amountProcessed, Item item){
+
+        }
+
+        final var groupDiscountsSkus = items.values()
+                .stream()
+                .filter(i->i.offers().stream().anyMatch(o->o.offerType() == OfferType.GROUP_DISCOUNT))
+                .map(Item::sku)
+                .toList();
+
+        return countAfterFreeItems.entrySet()
+                .stream()
+                .filter(item-> groupDiscountsSkus.contains(item.getKey()))
+                .map(e->Map.entry(items.get(e.getKey()), e.getValue()))
+                .sorted(Comparator.comparing(e->e.getKey().price(), Comparator.reverseOrder()))
+                .flatMap(e-> IntStream
+                        .range(0, e.getValue().intValue())
+                        .mapToObj(value -> new GroupedAmount(1, e.getKey().price(), e.getKey())))
+                .reduce((i, g)->{
+                    final var counter = i.counter() + 1;
+                    final var amountProcessed = counter % groupOfferOne.triggerQuantity() == 0 ?
+                            groupOfferOne.unit() * (counter / groupOfferOne.triggerQuantity()) :
+                            i.amountProcessed() + g.item().price();
+                    return new GroupedAmount(counter, amountProcessed, g.item());
+                })
+                .stream()
+                .map(GroupedAmount::amountProcessed)
+                .findAny()
+                .orElse(0);
+    }
+
+    private int calculateNonGroupPrice(Map<String, Long> countBySku) {
         return items
                 .entrySet()
                 .stream()
@@ -130,3 +165,4 @@ public class CheckoutSolution {
                 .collect(Collectors.groupingBy(Item::sku, Collectors.counting()));
     }
 }
+
